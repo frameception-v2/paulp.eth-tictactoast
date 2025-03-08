@@ -7,7 +7,7 @@ Here's a focused todo list following your requirements:
 - [x] Configure environment variables for USDC_MAINNET and WALLET_CONNECT_ID (env setup)
 
 **State Management**
-- [ ] Define GameState interface with players, board, payments in `/types.ts` (type safety)
+- [x] Define GameState interface with players, board, payments in `/types.ts` (type safety)
 - [ ] Implement encrypted localStorage persistence in `/lib/storage.ts` (state security)
 - [ ] Create API route `/api/game/[id].ts` for state validation (state API)
 

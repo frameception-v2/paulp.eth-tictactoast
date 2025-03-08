@@ -3,7 +3,7 @@ Here's a focused todo list following your requirements:
 **Foundation**
 - [ ] Initialize Next.js 14 project with Frog Framework and TypeScript template (base setup)
 - [ ] Install required dependencies: Frog, Viem, Wagmi, @framehq/crypto (dependency management)
-- [ ] Create `/app/api/frame/route.ts` with initial /start route and FrameState type (route scaffolding)
+- [x] Create `/app/api/frame/route.ts` with initial /start route and FrameState type (route scaffolding)
 - [ ] Configure environment variables for USDC_MAINNET and WALLET_CONNECT_ID (env setup)
 
 **State Management**

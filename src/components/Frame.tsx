@@ -15,6 +15,8 @@ import {
 } from "~/components/ui/card";
 
 import { config } from "~/lib/wagmi/config";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useEffect } from "react";
 import { truncateAddress } from "~/lib/truncateAddress";
 import { base, optimism } from "wagmi/chains";
 import { useSession } from "next-auth/react";

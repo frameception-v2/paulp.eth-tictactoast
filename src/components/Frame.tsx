@@ -14,7 +14,7 @@ import {
   CardContent,
 } from "~/components/ui/card";
 
-import { config } from "~/components/providers/WagmiProvider";
+import { config } from "~/lib/wagmi/config";
 import { truncateAddress } from "~/lib/truncateAddress";
 import { base, optimism } from "wagmi/chains";
 import { useSession } from "next-auth/react";

@@ -157,7 +157,7 @@ function GameCard({ context }: { context?: FrameContext }) {
                   className="px-4 py-2 text-sm"
                 >
                   Approve 1 USDC Wager
-                </button>
+                </PurpleButton>
               ) : (
                 <div className="text-sm text-green-600">Wager Approved ✓</div>
               )}

@@ -20,7 +20,7 @@ import { base, optimism } from "wagmi/chains";
 import { useSession } from "next-auth/react";
 import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
-import { PROJECT_TITLE } from "~/lib/constants";
+import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "~/lib/constants";
 import { isValidMove, checkWinner, checkDraw } from "~/lib/game-logic";
 
 function GameCard() {
@@ -110,7 +110,7 @@ export default function Frame() {
         setAdded(false);
       });
 
-      sdk.on("notificationsEnabled", ({ notificationDetails }) => {
+      sdk.on("notificationsEnabled", ({ notificationDetails }: { notificationDetails: string }) => {
         console.log("notificationsEnabled", notificationDetails);
       });
       sdk.on("notificationsDisabled", () => {
@@ -141,7 +141,7 @@ export default function Frame() {
         sdk.removeAllListeners();
       };
     }
-  }, [isSDKLoaded, addFrame]);
+  }, [isSDKLoaded, addFrame, context?.client.added]);
 
   if (!isSDKLoaded) {
     return <div>Loading...</div>;

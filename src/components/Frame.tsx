@@ -2,10 +2,8 @@
 
 import { useEffect, useCallback, useState } from "react";
 import sdk, {
-  AddFrame,
-  SignIn as SignInCore,
   type Context,
-} from "@farcaster/frame-sdk";
+} from "@framehq/sdk";
 import {
   Card,
   CardHeader,
@@ -51,12 +49,8 @@ export default function Frame() {
     try {
       await sdk.actions.addFrame();
     } catch (error) {
-      if (error instanceof AddFrame.RejectedByUser) {
-        setAddFrameResult(`Not added: ${error.message}`);
-      }
-
-      if (error instanceof AddFrame.InvalidDomainManifest) {
-        setAddFrameResult(`Not added: ${error.message}`);
+      if (error instanceof Error) {
+        setAddFrameResult(`Error: ${error.message}`);
       }
 
       setAddFrameResult(`Error: ${error}`);

@@ -13,10 +13,32 @@ import {
 } from "~/components/ui/card";
 
 import { config } from "~/lib/wagmi/config";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useAccount, useConnect, useDisconnect, useReadContract, useWriteContract } from "wagmi";
 import { truncateAddress } from "~/lib/truncateAddress";
 import { base, optimism } from "wagmi/chains";
 import { useSession } from "next-auth/react";
+import { USDC_MAINNET } from "~/lib/constants";
+
+// USDC ERC-20 ABI fragment
+const USDC_ABI = [
+  {
+    constant: true,
+    inputs: [{ name: "_owner", type: "address" }],
+    name: "balanceOf",
+    outputs: [{ name: "balance", type: "uint256" }],
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      { name: "spender", type: "address" },
+      { name: "value", type: "uint256" },
+    ],
+    name: "approve",
+    outputs: [{ name: "", type: "bool" }],
+    type: "function",
+  },
+] as const;
 import { createStore } from "mipd/store";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "~/lib/constants";
@@ -24,9 +46,39 @@ import { isValidMove, checkWinner, checkDraw } from "~/lib/game-logic";
 
 function GameCard() {
   const [board, setBoard] = useState<number[]>(Array(9).fill(0));
-  
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'draw'>('playing');
+  const { address } = useAccount();
+  const { writeContract } = useWriteContract();
+  
+  // Check USDC balance
+  const { data: usdcBalance } = useReadContract({
+    address: USDC_MAINNET,
+    abi: USDC_ABI,
+    functionName: 'balanceOf',
+    args: [address!],
+    query: { enabled: !!address }
+  });
+
+  // Check current allowance
+  const { data: allowance } = useReadContract({
+    address: USDC_MAINNET,
+    abi: USDC_ABI,
+    functionName: 'allowance',
+    args: [address!, context?.client.walletAddress], // Allow frame to spend
+    query: { enabled: !!address && !!context?.client.walletAddress }
+  });
+
+  const handleApprove = useCallback(() => {
+    if (!address || !context?.client.walletAddress) return;
+    
+    writeContract({
+      address: USDC_MAINNET,
+      abi: USDC_ABI,
+      functionName: 'approve',
+      args: [context.client.walletAddress, BigInt(1e6)], // 1 USDC (6 decimals)
+    });
+  }, [address, context?.client.walletAddress, writeContract]);
 
   const handleCellPress = useCallback((cellIndex: number) => {
     if (gameStatus !== 'playing' || !isValidMove(board, cellIndex)) return;
@@ -54,6 +106,23 @@ function GameCard() {
       </CardHeader>
       <CardContent>
         <div className="aspect-square w-full">
+          {address && (
+            <div className="mb-4 space-y-2">
+              <div className="text-sm">
+                Balance: {usdcBalance ? `${Number(usdcBalance) / 1e6} USDC` : 'Loading...'}
+              </div>
+              {allowance !== undefined && allowance < BigInt(1e6) ? (
+                <button
+                  onClick={handleApprove}
+                  className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 text-sm"
+                >
+                  Approve 1 USDC Wager
+                </button>
+              ) : (
+                <div className="text-sm text-green-600">Wager Approved ✓</div>
+              )}
+            </div>
+          )}
           <Board board={board} onCellPress={handleCellPress} />
         </div>
       </CardContent>

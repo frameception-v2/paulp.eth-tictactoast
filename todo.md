@@ -13,7 +13,7 @@ Here's a focused todo list following your requirements:
 
 **Payments Core**
 - [x] Setup Viem USDC client with mainnet config in `/lib/usdc.ts` (contract interaction)
-- [ ] Implement balance check and approval flow functions (payment safeguards)
+- [x] Implement balance check and approval flow functions (payment safeguards)
 
 **Game UI**
 - [x] Create SVG board component with touch mapping in `/components/Board.tsx` (interactive grid)

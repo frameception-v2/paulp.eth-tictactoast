@@ -3,7 +3,8 @@
 import { useEffect, useCallback, useState } from "react";
 import sdk, {
   type Context,
-} from "@framehq/sdk";
+} from "@farcaster/frame-sdk";
+import { Board } from "~/components/Board";
 import {
   Card,
   CardHeader,

@@ -79,7 +79,7 @@ function GameCard({ context }: { context?: FrameContext }) {
     abi: USDC_ABI,
     functionName: 'allowance',
     args: [address!, context?.client?.walletAddress], // Allow frame to spend
-    query: { enabled: !!address && !!context?.client.walletAddress }
+    query: { enabled: !!address && !!context?.client?.walletAddress }
   });
 
   const handleApprove = useCallback(() => {

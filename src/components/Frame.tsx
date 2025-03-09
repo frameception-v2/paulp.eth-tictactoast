@@ -3,7 +3,6 @@
 import { useEffect, useCallback, useState } from "react";
 import sdk from "@farcaster/frame-sdk";
 import type { FrameContext } from "@farcaster/frame-sdk";
-import { createStore } from "@walletconnect/modal-core";
 import { Board } from "~/components/Board";
 import {
   Card,

@@ -21,17 +21,27 @@ import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
 
-function ExampleCard() {
+function GameCard() {
+  const [board, setBoard] = useState<number[]>(Array(9).fill(0));
+  
+  const handleCellPress = useCallback((cellIndex: number) => {
+    console.log("Cell pressed:", cellIndex);
+    // TODO: Implement game logic in next steps
+    const newBoard = [...board];
+    newBoard[cellIndex] = 1; // Temporary test value
+    setBoard(newBoard);
+  }, [board]);
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Welcome to the Frame Template</CardTitle>
-        <CardDescription>
-          This is an example card that you can customize or remove
-        </CardDescription>
+        <CardTitle>{PROJECT_TITLE}</CardTitle>
+        <CardDescription>{PROJECT_DESCRIPTION}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Label>Place content in a Card here.</Label>
+        <div className="aspect-square w-full">
+          <Board board={board} onCellPress={handleCellPress} />
+        </div>
       </CardContent>
     </Card>
   );
@@ -132,7 +142,7 @@ export default function Frame() {
       }}
     >
       <div className="w-[300px] mx-auto py-2 px-2">
-        <ExampleCard />
+        <GameCard />
       </div>
     </div>
   );

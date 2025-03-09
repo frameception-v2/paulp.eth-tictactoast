@@ -29,6 +29,16 @@ const USDC_ABI = [
     type: "function",
   },
   {
+    constant: true,
+    inputs: [
+      { name: "_owner", type: "address" },
+      { name: "_spender", type: "address" }
+    ],
+    name: "allowance",
+    outputs: [{ name: "remaining", type: "uint256" }],
+    type: "function",
+  },
+  {
     constant: false,
     inputs: [
       { name: "spender", type: "address" },
@@ -44,7 +54,7 @@ import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "~/lib/constants";
 import { isValidMove, checkWinner, checkDraw } from "~/lib/game-logic";
 
-function GameCard() {
+function GameCard({ context }: { context?: FrameContext }) {
   const [board, setBoard] = useState<number[]>(Array(9).fill(0));
   const [currentPlayer, setCurrentPlayer] = useState(1);
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'draw'>('playing');
@@ -225,7 +235,7 @@ export default function Frame() {
       }}
     >
       <div className="w-[300px] mx-auto py-2 px-2">
-        <GameCard />
+        <GameCard context={context} />
       </div>
     </div>
   );

@@ -1,7 +1,43 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { validateGameID } from "~/lib/storage";
 import { decryptState } from "@framehq/crypto";
-import { SYSTEM_KEY } from "~/lib/constants";
+import { FrameRequest, getFrameMessage } from "@farcaster/frame-sdk";
+import { PROJECT_ID, SYSTEM_KEY } from "~/lib/constants";
+
+// Validate moves via signed frame messages
+async function isValidMove(payload: string, gameId: string, fid: number): Promise<boolean> {
+  const [receivedGameId, cellIndex, timestamp] = payload.split(':');
+  return (
+    receivedGameId === gameId &&
+    Number.isInteger(Number(cellIndex)) &&
+    Date.now() - Number(timestamp) < 5000 // 5s timeout
+  );
+}
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const body: FrameRequest = await request.json();
+  
+  // Validate frame message signature
+  const frameMessage = await getFrameMessage(body, {
+    systemKey: SYSTEM_KEY,
+    projectId: PROJECT_ID,
+  });
+
+  if (!frameMessage.isValid) {
+    return NextResponse.json({ error: "Invalid message signature" }, { status: 401 });
+  }
+
+  // Verify move contains valid signed data
+  const moveData = frameMessage.inputText;
+  if (!moveData || !isValidMove(moveData, params.id, frameMessage.requesterFid)) {
+    return NextResponse.json({ error: "Invalid move payload" }, { status: 400 });
+  }
+
+  return NextResponse.json({ success: true });
+}
 
 export async function GET(
   request: Request,

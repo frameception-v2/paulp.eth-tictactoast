@@ -20,7 +20,7 @@ Here's a focused todo list following your requirements:
 - [x] Add win detection algorithm in `/lib/game-logic.ts` (game rules)
 
 **Validation**
-- [ ] Implement move signature verification in API route (attack prevention)
+- [x] Implement move signature verification in API route (attack prevention)
 - [ ] Add turn timeout handling in game state updates (game pacing)
 
 **Social Features**

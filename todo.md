@@ -12,7 +12,7 @@ Here's a focused todo list following your requirements:
 - [x] Create API route `/api/game/[id].ts` for state validation (state API)
 
 **Payments Core**
-- [ ] Setup Viem USDC client with mainnet config in `/lib/usdc.ts` (contract interaction)
+- [x] Setup Viem USDC client with mainnet config in `/lib/usdc.ts` (contract interaction)
 - [ ] Implement balance check and approval flow functions (payment safeguards)
 
 **Game UI**

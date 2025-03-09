@@ -9,7 +9,7 @@ Here's a focused todo list following your requirements:
 **State Management**
 - [x] Define GameState interface with players, board, payments in `/types.ts` (type safety)
 - [x] Implement encrypted localStorage persistence in `/lib/storage.ts` (state security)
-- [ ] Create API route `/api/game/[id].ts` for state validation (state API)
+- [x] Create API route `/api/game/[id].ts` for state validation (state API)
 
 **Payments Core**
 - [ ] Setup Viem USDC client with mainnet config in `/lib/usdc.ts` (contract interaction)

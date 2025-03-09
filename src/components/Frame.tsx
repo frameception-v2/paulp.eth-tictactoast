@@ -25,13 +25,26 @@ import { PROJECT_TITLE } from "~/lib/constants";
 function GameCard() {
   const [board, setBoard] = useState<number[]>(Array(9).fill(0));
   
+  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'draw'>('playing');
+
   const handleCellPress = useCallback((cellIndex: number) => {
-    console.log("Cell pressed:", cellIndex);
-    // TODO: Implement game logic in next steps
+    if (gameStatus !== 'playing' || !isValidMove(board, cellIndex)) return;
+
     const newBoard = [...board];
-    newBoard[cellIndex] = 1; // Temporary test value
+    newBoard[cellIndex] = currentPlayer;
+    
+    const winner = checkWinner(newBoard);
+    if (winner) {
+      setGameStatus('won');
+    } else if (checkDraw(newBoard)) {
+      setGameStatus('draw');
+    } else {
+      setCurrentPlayer(prev => prev * -1); // Switch players (1 -> -1)
+    }
+    
     setBoard(newBoard);
-  }, [board]);
+  }, [board, currentPlayer, gameStatus]);
 
   return (
     <Card>

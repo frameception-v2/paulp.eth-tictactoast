@@ -17,7 +17,7 @@ Here's a focused todo list following your requirements:
 
 **Game UI**
 - [x] Create SVG board component with touch mapping in `/components/Board.tsx` (interactive grid)
-- [ ] Add win detection algorithm in `/lib/game-logic.ts` (game rules)
+- [x] Add win detection algorithm in `/lib/game-logic.ts` (game rules)
 
 **Validation**
 - [ ] Implement move signature verification in API route (attack prevention)

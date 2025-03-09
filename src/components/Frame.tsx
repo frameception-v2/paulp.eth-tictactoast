@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback, useState, useMemo } from "react";
+import { useEffect, useCallback, useState } from "react";
 import sdk from "@farcaster/frame-sdk";
 import type { FrameContext } from "@farcaster/frame-sdk";
 import { createStore } from "@walletconnect/modal-core";
@@ -177,6 +177,7 @@ export default function Frame() {
   const [context, setContext] = useState<FrameContext>();
 
   const [added, setAdded] = useState(false);
+  const [txHash, setTxHash] = useState<string>("");
 
   const [addFrameResult, setAddFrameResult] = useState("");
 

@@ -4,15 +4,8 @@ import { useEffect, useCallback, useState } from "react";
 import sdk from "@farcaster/frame-sdk";
 import type { FrameContext } from "@farcaster/frame-sdk";
 import { Board } from "~/components/Board";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "~/components/ui/card";
-
 import { config } from "~/lib/wagmi/config";
+import { Card } from "~/components/ui/carousel"; // Carousel has Card component
 import { useAccount, useConnect, useDisconnect, useReadContract, useWriteContract } from "wagmi";
 import { truncateAddress } from "~/lib/truncateAddress";
 import { base, optimism } from "wagmi/chains";
@@ -50,7 +43,6 @@ const USDC_ABI = [
   },
 ] as const;
 import { createStore } from "mipd/store";
-import { Label } from "~/components/ui/label";
 import { PurpleButton } from "~/components/ui/PurpleButton";
 import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "~/lib/constants";
 import { isValidMove, checkWinner, checkDraw } from "~/lib/game-logic";
@@ -176,7 +168,6 @@ export default function Frame() {
   const [context, setContext] = useState<FrameContext>();
 
   const [added, setAdded] = useState(false);
-  const [txHash, setTxHash] = useState<string>("");
 
   const [addFrameResult, setAddFrameResult] = useState("");
 

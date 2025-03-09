@@ -31,7 +31,7 @@ Here's a focused todo list following your requirements:
 - [ ] Create batch transfer function with error recovery in `/lib/escrow.ts` (prize distribution)
 
 **Mobile UX**
-- [ ] Configure viewport meta tags in `/app/layout.tsx` (mobile rendering)
+- [x] Configure viewport meta tags in `/app/layout.tsx` (mobile rendering)
 - [ ] Add touch target CSS rules in `/app/globals.css` (accessibility)
 
 **Integration**

@@ -2,7 +2,7 @@
 
 import { useEffect, useCallback, useState } from "react";
 import sdk, {
-  type Context,
+  type FrameContext,
 } from "@farcaster/frame-sdk";
 import { Board } from "~/components/Board";
 import {
@@ -64,7 +64,7 @@ function GameCard() {
 
 export default function Frame() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
-  const [context, setContext] = useState<Context.FrameContext>();
+  const [context, setContext] = useState<FrameContext>();
 
   const [added, setAdded] = useState(false);
 

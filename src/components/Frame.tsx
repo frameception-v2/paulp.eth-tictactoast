@@ -57,7 +57,8 @@ import { isValidMove, checkWinner, checkDraw } from "~/lib/game-logic";
 function GameCard({ context }: { context?: FrameContext }) {
   const [board, setBoard] = useState<number[]>(Array(9).fill(0));
   const [currentPlayer, setCurrentPlayer] = useState(1);
-  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'draw'>('playing');
+  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'draw' | 'timeout'>('playing');
+  const [turnStartTime, setTurnStartTime] = useState(Date.now());
   const { address } = useAccount();
   const { writeContract } = useWriteContract();
   
@@ -107,13 +108,38 @@ function GameCard({ context }: { context?: FrameContext }) {
       setGameStatus('draw');
     } else {
       setCurrentPlayer(prev => prev * -1); // Switch players (1 -> -1)
+      setTurnStartTime(Date.now());
     }
     
     setBoard(newBoard);
   }, [board, currentPlayer, gameStatus]);
 
+  // Handle turn timeout
+  useEffect(() => {
+    if (gameStatus !== 'playing') return;
+    
+    const timer = setInterval(() => {
+      if (Date.now() - turnStartTime > 5000) { // 5 second timeout
+        setGameStatus('timeout');
+        setTimeout(() => {
+          setBoard(Array(9).fill(0));
+          setGameStatus('playing');
+          setCurrentPlayer(1);
+          setTurnStartTime(Date.now());
+        }, 3000); // Reset after 3 second message display
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [gameStatus, turnStartTime]);
+
   return (
     <Card>
+      {gameStatus === 'timeout' && (
+        <div className="absolute inset-0 bg-red-900/80 flex items-center justify-center text-white text-xl text-center p-4">
+          Turn timed out! Resetting game...
+        </div>
+      )}
       <CardHeader>
         <CardTitle>{PROJECT_TITLE}</CardTitle>
         <CardDescription>{PROJECT_DESCRIPTION}</CardDescription>

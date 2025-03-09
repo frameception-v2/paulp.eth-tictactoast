@@ -21,7 +21,7 @@ Here's a focused todo list following your requirements:
 
 **Validation**
 - [x] Implement move signature verification in API route (attack prevention)
-- [ ] Add turn timeout handling in game state updates (game pacing)
+- [x] Add turn timeout handling in game state updates (game pacing)
 
 **Social Features**
 - [ ] Create QR code generation utility in `/lib/qr.ts` (mobile sharing)

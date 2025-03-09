@@ -51,6 +51,7 @@ const USDC_ABI = [
 ] as const;
 import { createStore } from "mipd/store";
 import { Label } from "~/components/ui/label";
+import { PurpleButton } from "~/components/ui/PurpleButton";
 import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "~/lib/constants";
 import { isValidMove, checkWinner, checkDraw } from "~/lib/game-logic";
 

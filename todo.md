@@ -24,7 +24,7 @@ Here's a focused todo list following your requirements:
 - [x] Add turn timeout handling in game state updates (game pacing)
 
 **Social Features**
-- [ ] Create QR code generation utility in `/lib/qr.ts` (mobile sharing)
+- [x] Create QR code generation utility in `/lib/qr.ts` (mobile sharing)
 - [ ] Implement deep link validation middleware in API (invite security)
 
 **Payment Resolution**

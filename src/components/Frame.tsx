@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import { createStore } from "mipd";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE } from "~/lib/constants";
+import { isValidMove, checkWinner, checkDraw } from "~/lib/game-logic";
 
 function GameCard() {
   const [board, setBoard] = useState<number[]>(Array(9).fill(0));
@@ -121,7 +122,7 @@ export default function Frame() {
       });
 
       console.log("Calling ready");
-      sdk.actions.ready({});
+      sdk.actions.ready();
 
       // Set up a MIPD Store, and request Providers.
       const store = createStore();

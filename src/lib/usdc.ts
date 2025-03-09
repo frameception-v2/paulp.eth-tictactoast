@@ -1,9 +1,15 @@
-import { createPublicClient, getContract, http } from "viem";
+import { createPublicClient, getContract, http, createWalletClient } from "viem";
 import { base } from "wagmi/chains";
-import { USDC_MAINNET } from "./constants";
+import { USDC_MAINNET, SYSTEM_KEY } from "./constants";
 
 // Configure public client for Base mainnet
 export const usdcClient = createPublicClient({
+  chain: base,
+  transport: http(process.env.ALCHEMY_BASE_RPC_URL),
+});
+
+// Configure wallet client for USDC interactions
+const walletClient = createWalletClient({
   chain: base,
   transport: http(process.env.ALCHEMY_BASE_RPC_URL),
 });
@@ -56,3 +62,28 @@ export const usdcContract = getContract({
   abi: usdcAbi,
   publicClient: usdcClient,
 });
+
+export async function checkUsdcBalance(address: `0x${string}`): Promise<number> {
+  try {
+    const balance = await usdcContract.read.balanceOf([address]);
+    return Number(balance) / 1e6; // Convert from 6-decimal USDC format
+  } catch (error) {
+    console.error("Balance check failed:", error);
+    throw new Error("Failed to check USDC balance");
+  }
+}
+
+export async function approveUsdcSpend(spender: `0x${string}`, amount: number): Promise<`0x${string}`> {
+  try {
+    const { request } = await usdcContract.simulateContract.approve(
+      [spender, BigInt(amount * 1e6)], // Convert to USDC 6-decimal format
+      { account: spender }
+    );
+    
+    const hash = await walletClient.writeContract(request);
+    return hash;
+  } catch (error) {
+    console.error("USDC approval failed:", error);
+    throw new Error("User rejected approval or insufficient balance");
+  }
+}

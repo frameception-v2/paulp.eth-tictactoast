@@ -75,19 +75,23 @@ function GameCard({ context }: { context?: FrameContext }) {
     address: USDC_MAINNET,
     abi: USDC_ABI,
     functionName: 'allowance',
-    args: [address!, context?.client.walletAddress], // Allow frame to spend
+    args: [address!, context?.client?.walletAddress], // Allow frame to spend
     query: { enabled: !!address && !!context?.client.walletAddress }
   });
 
   const handleApprove = useCallback(() => {
-    if (!address || !context?.client.walletAddress) return;
+    if (!address || !context?.client?.walletAddress) return;
     
-    writeContract({
-      address: USDC_MAINNET,
-      abi: USDC_ABI,
-      functionName: 'approve',
-      args: [context.client.walletAddress, BigInt(1e6)], // 1 USDC (6 decimals)
-    });
+    try {
+      writeContract({
+        address: USDC_MAINNET,
+        abi: USDC_ABI,
+        functionName: 'approve',
+        args: [context.client.walletAddress, BigInt(1e6)], // 1 USDC (6 decimals)
+      });
+    } catch (error) {
+      console.error("Approval failed:", error);
+    }
   }, [address, context?.client.walletAddress, writeContract]);
 
   const handleCellPress = useCallback((cellIndex: number) => {
@@ -122,9 +126,9 @@ function GameCard({ context }: { context?: FrameContext }) {
                 Balance: {usdcBalance ? `${Number(usdcBalance) / 1e6} USDC` : 'Loading...'}
               </div>
               {allowance !== undefined && allowance < BigInt(1e6) ? (
-                <button
+                <PurpleButton
                   onClick={handleApprove}
-                  className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 text-sm"
+                  className="px-4 py-2 text-sm"
                 >
                   Approve 1 USDC Wager
                 </button>

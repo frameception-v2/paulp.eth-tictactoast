@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useCallback, useState } from "react";
-import sdk, {
-  type FrameContext,
-} from "@farcaster/frame-sdk";
+import sdk from "@farcaster/frame-sdk";
+import type { FrameContext } from "@farcaster/frame-sdk";
 import { Board } from "~/components/Board";
 import {
   Card,
@@ -18,7 +17,7 @@ import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { truncateAddress } from "~/lib/truncateAddress";
 import { base, optimism } from "wagmi/chains";
 import { useSession } from "next-auth/react";
-import { createStore } from "mipd";
+import { createStore } from "mipd/store";
 import { Label } from "~/components/ui/label";
 import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "~/lib/constants";
 import { isValidMove, checkWinner, checkDraw } from "~/lib/game-logic";
